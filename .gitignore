@@ -1,0 +1,21 @@
+# Local state and downloads are never published.
+work/
+node_modules/
+.env
+.env.*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.gguf
+*.exe
+*.dll
+*.log
+*.pid
+*.zip
+*.mp4
+*.webm
+*.pem
+*.key
+.DS_Store
+Thumbs.db

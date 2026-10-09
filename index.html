@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#087e61"><title>금융상품 운영실 · 변경을 확인하고 반영하기</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="ops.css">
+  <link rel="stylesheet" href="ops-map.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">↗</span><span>금융상품 운영실<small>PRODUCT OPERATIONS LAB</small></span></a>
+    <div class="top-actions"><span class="demo-tag">합성 공지 · 실제 로컬 AI</span><button id="model-open" class="quiet" hidden>이전 추출 실험</button><button id="guide-open" class="quiet">읽는 방법 <span>?</span></button></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow"><span class="live-dot"></span> 금융상품 정보가 바뀌는 과정을 직접 따라가세요</p><h1>공지 한 장이,<br class="mobile-break"> 고객의 금리가 되기까지.</h1><p class="lead">AI가 읽은 내용과 사람이 결정한 결과를 한눈에 확인합니다.</p></div>
+      <div class="intro-aside"><span class="date-tag">설계 확인일 <b>2026.10.09</b></span><p>뱅크샐러드 공고의 상품 정보 변경·DB 최신화 업무를 위해, AI가 공지를 읽고 담당자가 검토하는 운영실을 만들었습니다.</p><a href="https://banksalad.career.greetinghr.com/ko/o/91296" target="_blank" rel="noreferrer">공고 업무 확인 ↗</a></div>
+    </section>
+    <nav class="ops-mode-nav" aria-label="실험 모드"><button id="ops-mode-live" class="active" aria-pressed="true">AI 공지 검토 <span>실제 모델 · 저장되는 실행</span></button><button id="ops-mode-simulation" aria-pressed="false">운영 조건 비교 <span>가상 시간 · 추출 모의</span></button><span class="ops-mode-note">가상 은행·합성 공지로 직접 실행합니다</span></nav>
+    <section id="ops-workspace" class="ops-workspace" aria-label="저장되는 상품 변경 업무">
+      <div class="ops-connection-bar"><div><span class="ops-led"></span><strong>한 건을 끝까지 연결하기</strong><span id="ops-storage-label">저장소 확인 중</span></div><div><button id="ops-refresh" class="quiet">새로 확인 ↻</button><button id="ops-reset" class="quiet">데모 초기화</button></div></div>
+      <div id="ops-flow" class="ops-flow" aria-label="선택한 공지의 처리 단계" hidden></div>
+      <div class="ops-record-strip"><span>접수한 공지</span><span id="ops-case-count" class="tiny-pill">0건</span><div id="ops-case-list" class="ops-case-list" aria-label="접수한 공지 선택"></div></div>
+      <section class="ops-map-shell" aria-label="금융상품 변경 업무 지도">
+        <div class="ops-map-toolbar"><div><span class="ops-map-scenarios-label">실제 기록으로 흐름 살펴보기</span><button id="ops-map-normal" class="ops-map-scenario">정상 변경</button><button id="ops-map-held" class="ops-map-scenario">조건 누락·보류</button></div><button id="ops-map-new" class="primary">새 공지 시험하기 <span>↗</span></button></div>
+        <div id="ops-map"></div>
+      </section>
+      <details id="ops-inspection" class="ops-inspection">
+        <summary><span><b>원문과 검토안을 자세히 보기</b><small>원문 · AI 해석 · 검증 항목 · 승인</small></span><span class="ops-inspection-arrow" aria-hidden="true">↘</span></summary>
+      <div class="ops-desk">
+        <aside class="ops-input ops-panel"><p class="ops-label">01 / SOURCE</p><h2>원문</h2><p class="ops-muted">형식이 정해지지 않은 한국어 공지</p><label for="ops-sample">시험할 상황</label><select id="ops-sample"><option value="normal">정상 금리 변경</option><option value="conditional">신규 고객만 적용 · 조건 제한</option><option value="conflict">서로 다른 금리 · 출처 충돌</option><option value="missingDate">적용 날짜 누락</option><option value="competitor">경쟁상품 조사</option><option value="future">미래 적용 공지</option></select><div id="ops-original" class="ops-original" hidden></div><details id="ops-compose" class="ops-compose" open><summary>공지 작성·수정</summary><div class="ops-envelope"><span>가상 금융사 · 합성 자료</span><b id="ops-notice-label">공지 준비 중</b><label class="sr-only" for="ops-source">공지 원문</label><textarea id="ops-source" spellcheck="false" rows="10"></textarea></div></details><button id="ops-submit" class="primary full">AI로 공지 읽기 <span>→</span></button><button id="ops-submit-n8n" hidden disabled>n8n 연결 보류</button><button id="ops-duplicate" class="ops-text-button" disabled>같은 공지를 다시 보내면?</button><p id="ops-input-note" class="ops-muted" aria-live="polite">실제 금융사·고객 정보는 사용하지 않습니다.</p><div id="ops-model-status" class="ops-model-status" role="status">모델 연결 확인 중</div></aside>
+        <section class="ops-ai ops-panel"><p class="ops-label">02 / LLM</p><h2>AI가 읽은 내용</h2><p class="ops-muted">변경 후보·적용 조건·확인할 질문</p><div id="ops-ai-detail" aria-live="polite"></div></section>
+        <section class="ops-validation ops-panel"><p class="ops-label">03 / CHECK</p><h2>검증 결과</h2><p class="ops-muted">AI 응답을 원문과 규칙으로 대조</p><div id="ops-validation-detail" aria-live="polite"></div></section>
+        <section class="ops-review ops-panel"><p class="ops-label">04 / HUMAN</p><h2>담당자 판단</h2><p class="ops-muted">승인 전에는 상품 DB를 유지</p><div id="ops-review-detail" aria-live="polite"></div></section>
+      </div>
+      <div class="ops-result-row">
+        <aside class="ops-customer ops-panel"><p class="ops-label">OUTPUT / 고객이 보는 결과</p><h2>승인하면 여기도 바뀝니다</h2><p class="ops-muted">저장된 상품을 API로 읽는 가상 화면</p><div id="ops-customer-preview" class="ops-phone"></div><div id="ops-output-note" class="ops-output-note">승인 전에는 이전 상품 값을 유지합니다.</div><button id="ops-export" class="quiet full">공지·승인·변경 기록 저장 ↓</button></aside>
+      </div>
+      </details>
+      <div class="ops-bottom-grid"><section class="ops-panel ops-ticket-panel"><div class="ops-panel-heading"><div><p class="ops-label">EXCEPTIONS / 해결할 일</p><h2>멈춘 이유를 업무로 남기기</h2></div><span class="ops-small-tag">로컬 업무함 · 외부 전송 보류</span></div><div id="ops-ticket-list"></div></section><section class="ops-panel ops-trace-panel"><div class="ops-panel-heading"><div><p class="ops-label">TRACE / 실제 실행 기록</p><h2>언제, 무엇이 바뀌었나</h2></div><span id="ops-real-timing" class="ops-small-tag">가상 시간과 별도</span></div><div id="ops-event-list"></div></section></div>
+      <section class="ops-integrations"><div class="ops-panel-heading"><div><p class="ops-label">ROLES / 역할 분담</p><h2>AI는 읽고, 코드는 검증하고, 사람은 결정합니다.</h2></div><span class="ops-small-tag">n8n·SaaS 연결 보류</span></div><div id="ops-integration-list" class="ops-integration-list"></div><details class="ops-setup"><summary>실제 모델과 시뮬레이션의 범위</summary><p>AI 공지 검토는 내 컴퓨터의 Qwen 모델이 한국어 합성 공지를 실제로 읽습니다. 원문 근거·값·날짜·적용 조건은 코드로 다시 확인하며, 통과한 후보만 담당자가 승인합니다. 모델 오류가 나면 샘플 응답으로 바꾸지 않습니다.</p><p>아래 운영 조건 비교는 가상 시간과 추출 모의로 계산하는 별도 실험입니다. 이 프로젝트는 공식 공고를 바탕으로 설계한 개인 데모이며 회사의 내부 시스템이나 도입 도구를 재현한 것은 아닙니다.</p></details></section>
+      <p class="ops-footnote">뱅크샐러드 공고의 상품 DB 최신화·상품 변경 관리·오류 모니터링 업무를 위해 접수 → 검토 → 저장 → 예외 처리를 연결했습니다. 상품 표시 정보의 합성 실험이며 개인별 대출 심사 금리를 계산하지 않습니다.</p>
+    </section>
+    <div id="simulation-workspace" hidden>
+    <section class="workspace" aria-label="금융상품 운영 시뮬레이션">
+      <aside class="controls">
+        <div class="section-kicker">01 <span>조건을 바꾸기</span></div><h2>오늘의 운영 조건</h2>
+        <label class="control-label" for="count">변경 공지 <output id="count-value">24건</output></label><input id="count" type="range" min="12" max="60" step="12" value="24"><p class="control-note">원문 묶음의 크기</p>
+        <label class="control-label" for="arrival">공지 도착 간격 <output id="arrival-value">3분</output></label><input id="arrival" type="range" min="1" max="8" value="3"><p class="control-note">짧을수록 일이 빠르게 들어와요</p>
+        <label class="control-label" for="reviewers">검토 담당자 <output id="reviewers-value">1명</output></label><input id="reviewers" type="range" min="1" max="4" value="1"><div class="inline-assumption"><label for="review-time">한 건 검토시간 · 가정</label><select id="review-time"><option value="2">2분</option><option value="4">4분</option><option value="8" selected>8분</option><option value="12">12분</option></select></div>
+        <label class="control-label" for="automation">내부 정보 자동 반영</label><select id="automation"><option value="0">모든 변경을 검토</option><option value="1">수집 시각만 자동 반영</option><option value="2" selected>수집 시각 + 출처 해시</option></select><p class="control-note">금리·한도·심의필·판매 상태는 항상 검토</p>
+        <label class="control-label" for="mode">처리 방식</label><select id="mode"><option value="manual">수동 확인 + 사람 검토</option><option value="rules">규칙 확인 + 사람 검토</option><option value="agent" selected>AI 추출 모의 + 규칙 + 사람</option></select>
+        <label class="check-label"><input id="auto-review" type="checkbox"><span>가상 담당자가 검토하기<small>켜면 검토시간 뒤에 승인·보류를 계산</small></span></label>
+        <button id="rerun" class="primary full">조건 적용 후 시작 <span>↻</span></button><p id="dirty-note" class="dirty-note" aria-live="polite"></p>
+        <div class="assumption-note"><b>같은 원문, 같은 시드 42</b><span>시간과 처리 용량은 프로젝트 가정입니다. 실제 회사 운영 성과가 아닙니다.</span></div>
+      </aside>
+      <section class="arena">
+        <div class="arena-head"><div class="section-kicker">02 <span>어디서 멈췄는지 보기</span></div><span id="engine-badge" class="engine-badge">샘플 추출기</span></div>
+        <div class="metrics" aria-live="polite">
+          <div><span>미해결 업무</span><strong id="metric-unresolved">—</strong><small id="metric-arrived">도착한 공지 기준</small></div>
+          <div><span>평균 처리시간</span><strong id="metric-time">—</strong><small>종료된 건 · 가상 분</small></div>
+          <div><span>잘못 반영한 변경</span><strong id="metric-errors">—</strong><small id="metric-writes">실제 반영 건 기준</small></div>
+        </div>
+        <div class="floor-wrap">
+          <svg id="floor" viewBox="0 0 760 432" role="group" aria-label="공지 접수, 추출, 검증, 사람 검토, DB 반영의 연결된 업무 공간">
+            <defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#dce5e9" stroke-width=".6"/></pattern><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="#aabac4" stroke-width="1.5"/></marker><filter id="shadow"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#183e35" flood-opacity=".07"/></filter></defs>
+            <rect width="760" height="432" fill="#f2f6f8"/><path d="M-20 342L387 45L801 251L389 551Z" fill="url(#grid)" opacity=".85"/>
+            <g class="flow-lines" fill="none" stroke="#aabac4" stroke-width="2" marker-end="url(#arrow)"><path d="M155 132H220"/><path d="M334 132H399"/><path d="M513 132H586"/><path d="M457 187V260"/><path d="M514 305H635V188"/><path d="M276 187V369H425"/></g>
+            <text x="550" y="113" class="route-label">내부 정보</text><text x="478" y="225" class="route-label">중요 변경</text>
+            <g class="station" data-stage="incoming" tabindex="0" role="button" aria-label="접수할 공지 보기" transform="translate(41 83)"><path d="M0 94L13 104H127V10L114 0Z" fill="#dce5eb"/><rect width="114" height="94" rx="9" fill="white" stroke="#cad7df"/><text x="15" y="24" class="station-icon">▤</text><text x="15" y="48" class="station-name">공지 접수</text><text x="15" y="67" class="station-desc">금융사 변경 원문</text><text id="stage-incoming" x="96" y="25" class="station-count">0</text></g>
+            <g class="station" data-stage="extract" tabindex="0" role="button" aria-label="변경 추출 중 공지 보기" transform="translate(220 83)"><path d="M0 94L13 104H127V10L114 0Z" fill="#d3e4f8"/><rect width="114" height="94" rx="9" fill="#f8fbff" stroke="#a3c5ee"/><text x="15" y="24" class="station-icon blue">✦</text><text x="15" y="48" class="station-name">변경 추출</text><text x="15" y="67" class="station-desc">후보 + 근거 문장</text><text id="stage-extract" x="96" y="25" class="station-count blue">0</text></g>
+            <g class="station" data-stage="validate" tabindex="0" role="button" aria-label="규칙 검증 중 공지 보기" transform="translate(399 83)"><path d="M0 94L13 104H127V10L114 0Z" fill="#d1e7e0"/><rect width="114" height="94" rx="9" fill="#f8fdfb" stroke="#a5cfbf"/><text x="15" y="24" class="station-icon green">✓</text><text x="15" y="48" class="station-name">규칙 검증</text><text x="15" y="67" class="station-desc">날짜 · 출처 · 버전</text><text id="stage-validate" x="96" y="25" class="station-count green">0</text></g>
+            <g class="station" data-stage="done" tabindex="0" role="button" aria-label="상품 DB에 반영한 공지 보기" transform="translate(586 83)"><path d="M0 94L13 104H127V10L114 0Z" fill="#cbe2d9"/><rect width="114" height="94" rx="9" fill="white" stroke="#94c2b1"/><text x="15" y="24" class="station-icon green">▱</text><text x="15" y="48" class="station-name">상품 DB</text><text x="15" y="67" class="station-desc">확인한 변경 반영</text><text id="stage-done" x="96" y="25" class="station-count green">0</text></g>
+            <g class="station" data-stage="review" tabindex="0" role="button" aria-label="사람 검토 대기 보기" transform="translate(393 260)"><path d="M0 94L13 104H133V10L120 0Z" fill="#f0dfc2"/><rect width="120" height="94" rx="9" fill="#fffaf0" stroke="#dbc297"/><text x="15" y="24" class="station-icon amber">♙</text><text x="15" y="48" class="station-name">사람 검토</text><text x="15" y="67" class="station-desc">승인 전에는 멈춤</text><text id="stage-review" x="100" y="25" class="station-count amber">0</text></g>
+            <g class="station" data-stage="hold" tabindex="0" role="button" aria-label="보류와 예정 건 보기" transform="translate(175 272)"><path d="M0 73L10 82H122V10L112 0Z" fill="#e9dde0"/><rect width="112" height="73" rx="8" fill="#fff9f9" stroke="#ddbdc3"/><text x="13" y="27" class="station-name">보류 · 예정</text><text x="13" y="49" class="station-desc">이전 유효 값 유지</text><text id="stage-hold" x="94" y="27" class="station-count red">0</text></g>
+            <rect x="30" y="377" width="259" height="30" rx="15" fill="white" stroke="#d4dfe5"/><text id="floor-insight" x="43" y="397" class="floor-insight">검토함의 카드를 눌러 근거를 확인하세요</text>
+            <g id="tokens"></g>
+          </svg>
+          <div id="floor-tooltip" class="floor-tooltip" aria-live="polite"></div>
+        </div>
+        <div class="playbar"><div><button id="play" class="primary" aria-label="시뮬레이션 재생">▶ 재생</button><button id="step" class="quiet">+5분</button><button id="reset" class="icon-button" aria-label="초기화">↻</button></div><div class="clock"><span id="time-label">00:00</span><select id="speed" aria-label="재생 속도"><option value="1">1배속</option><option value="4" selected>4배속</option><option value="12">12배속</option></select></div></div>
+        <div class="legend"><span><i class="dot blue-bg"></i>추출 중</span><span><i class="dot amber-bg"></i>검토 필요</span><span><i class="dot green-bg"></i>반영 완료</span><span><i class="dot red-bg"></i>보류</span><span id="progress-label" class="progress-label"></span></div>
+      </section>
+      <aside class="detail">
+        <div class="detail-header"><div class="section-kicker">03 <span>한 건의 근거 확인</span></div><button id="next-review" class="text-button">다음 검토 →</button></div>
+        <div id="case-detail"></div>
+      </aside>
+    </section>
+    <section class="feed-section">
+      <div class="feed-head"><div><h2>변경 공지함 <span id="feed-count" class="tiny-pill"></span></h2><p>카드를 누르면 원문과 처리 이유를 볼 수 있어요.</p></div><div class="filter-buttons" role="group" aria-label="공지 상태 필터"><button class="filter active" data-filter="all">전체</button><button class="filter" data-filter="review">검토</button><button class="filter" data-filter="hold">보류·예정</button><button class="filter" data-filter="done">반영</button></div></div>
+      <div id="case-feed" class="case-feed"></div>
+    </section>
+    <section id="comparison" class="comparison-section">
+      <div class="comparison-head"><div><p class="eyebrow">같은 원문으로 다시 해보면</p><h2>자동화가 일을 얼마나 바꿀까?</h2><p>원문과 검토 인원을 고정하고, 처리 방식만 바꿔 비교합니다.</p></div><button id="compare" class="primary">세 방식 비교하기 <span>↗</span></button></div>
+      <div id="comparison-results" class="comparison-empty"><span class="compare-symbol">≋</span><div><b>같은 조건에서 비교해야 차이가 보여요.</b><p>검토·보류까지 포함한 가상 처리시간과 사람의 작업량을 계산합니다.</p></div></div>
+    </section>
+    <section class="records-section"><div class="records-head"><h2>반영 결과와 실행 기록</h2><div class="record-tabs"><button class="record-tab active" data-tab="db">상품 DB</button><button class="record-tab" data-tab="research">경쟁상품 조사</button><button class="record-tab" data-tab="log">사건 기록</button><button id="export" class="quiet">실행 결과 저장 ↓</button></div></div><div id="record-content" class="record-content"></div></section>
+    </div>
+    <footer><span>개인 프로젝트 · 가상 은행·상품 · 합성 공지</span><span>업무 연결은 실제 기록, 조건 비교는 가상 시간입니다. 실제 회사 성과가 아닙니다.</span></footer>
+  </main>
+  <dialog id="guide-dialog"><button class="dialog-close" aria-label="안내 닫기">×</button><p class="eyebrow">처음이라면</p><h2>공지 한 건을 끝까지 따라가세요.</h2><ol class="guide-list"><li><b>한국어 공지를 AI로 읽으세요.</b><span>시험할 상황을 고른 뒤 AI로 공지 읽기를 누릅니다. 실제 모델이 변경 후보와 근거를 만듭니다.</span></li><li><b>원문·AI 해석·검증 결과를 확인하세요.</b><span>근거 문장을 눌러 원문과 대조합니다. 검증을 통과한 후보를 승인하면 상품 DB와 고객 화면이 바뀝니다.</span></li><li><b>조건 누락과 원문 변경을 시험하세요.</b><span>신규 고객만 적용되는 공지와 날짜 누락을 시험합니다. 원문 변경 후 이전 승인 차단과 재분석도 확인합니다.</span></li></ol><div class="guide-boundary">비교 실험은 가상 담당자의 검토시간을 포함합니다. 적용일이 미래거나 출처가 충돌하면 반영하지 않고 남겨 둡니다.</div><button class="primary full dialog-close">직접 확인하기</button></dialog>
+  <dialog id="model-dialog"><button class="dialog-close" aria-label="모델 실험 닫기">×</button><p class="eyebrow">원문 한 건의 실제 추출</p><h2>내 컴퓨터의 AI로 읽어보기</h2><p class="model-copy">‘운영 조건 비교’에서 선택한 합성 원문 한 건을 설치된 Ollama 모델로 추출하고 검증합니다. 이 실험은 현재 시뮬레이션의 DB에 반영하지 않습니다.</p><div class="model-select"><select id="model-select" aria-label="로컬 모델 선택"><option>모델을 확인하세요</option></select><button id="models-refresh" class="quiet">모델 확인</button></div><p id="model-status" class="control-note" aria-live="polite">모델을 자동으로 설치하거나 다운로드하지 않습니다.</p><button id="extract-local" class="primary full" disabled>선택한 원문 추출하기</button><pre id="model-output" class="model-output">선택한 공지의 원문 → 실제 모델 추출 → 코드 검증</pre></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.mjs"></script>
+  <script type="module" src="ops-ui.mjs"></script>
+</body>
+</html>

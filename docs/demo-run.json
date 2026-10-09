@@ -1,0 +1,787 @@
+{
+  "title": "금융상품 운영실: 실제 LLM 공지 검토",
+  "scope": "합성 공지·실제 로컬 실행 기록. 회사 운영 성과 아님.",
+  "epoch": "ff60204f-4aeb-4f43-9894-61d27c515fa3",
+  "products": [
+    {
+      "id": "P1",
+      "name": "합성 생활대출 1",
+      "bank": "가상한결은행",
+      "rate": 3.76,
+      "limit": 50000000,
+      "reviewId": "DEMO-2026-1",
+      "active": true,
+      "version": 2,
+      "updatedAt": "2026-10-09T07:14:35.263Z"
+    },
+    {
+      "id": "P2",
+      "name": "합성 생활대출 2",
+      "bank": "가상새봄은행",
+      "rate": 4.6,
+      "limit": 50000000,
+      "reviewId": "DEMO-2026-2",
+      "active": true,
+      "version": 1,
+      "updatedAt": "2026-10-09T07:05:36.109Z"
+    },
+    {
+      "id": "P3",
+      "name": "합성 생활대출 3",
+      "bank": "가상푸른은행",
+      "rate": 4.7,
+      "limit": 50000000,
+      "reviewId": "DEMO-2026-3",
+      "active": true,
+      "version": 1,
+      "updatedAt": "2026-10-09T07:05:36.109Z"
+    }
+  ],
+  "cases": [
+    {
+      "id": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-3f92d3c3-24ea-4965-bb07-bafe25dfc564",
+      "noticeId": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-1-new-f7938ed6-2524-4dd8-9c05-157d01893b7f",
+      "productId": "P1",
+      "sourceType": "official-synthetic",
+      "sourceText": "[가상한결은행 · 합성 자료]\n생활대출 P1 상품 변경 안내\n2026-10-09부터 적용합니다.\n대출 금리는 3.76%로 변경되었습니다.\n이 안내는 모든 고객에게 동일하게 적용됩니다.",
+      "sourceChannel": "llm",
+      "executionId": null,
+      "sourceRevision": 1,
+      "sourceHash": "4edb8b7de1a4fabea03fb26410930884d5cf61eec6d180a58f4927f49fab5b92",
+      "receivedAt": "2026-10-09T07:07:44.064Z",
+      "aiSnapshot": {
+        "epoch": "ff60204f-4aeb-4f43-9894-61d27c515fa3",
+        "productId": "P1",
+        "noticeId": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-1-new-f7938ed6-2524-4dd8-9c05-157d01893b7f",
+        "sourceType": "official-synthetic",
+        "sourceHash": "4edb8b7de1a4fabea03fb26410930884d5cf61eec6d180a58f4927f49fab5b92",
+        "sourceRevision": 1,
+        "expectedProductVersion": 1,
+        "productSnapshot": {
+          "id": "P1",
+          "name": "합성 생활대출 1",
+          "bank": "가상한결은행",
+          "rate": 4.5,
+          "limit": 50000000,
+          "reviewId": "DEMO-2026-1",
+          "active": true,
+          "version": 1,
+          "updatedAt": "2026-10-09T07:05:36.099Z"
+        },
+        "analysis": {
+          "summary": "대출 금리가 변경되었습니다.",
+          "changes": [
+            {
+              "field": "rate",
+              "value": 3.76,
+              "quote": "대출 금리가 3.76%로 변경되었습니다."
+            }
+          ],
+          "effectiveDate": "2026-10-09",
+          "dateQuote": "2026-10-09부터 적용합니다.",
+          "conditions": [],
+          "questions": []
+        },
+        "modelResponse": "{\"summary\":\"대출 금리가 변경되었습니다.\",\"changes\":[{\"field\":\"rate\",\"value\":3.76,\"quote\":\"대출 금리가 3.76%로 변경되었습니다.\"}],\"effectiveDate\":\"2026-10-09\",\"dateQuote\":\"2026-10-09부터 적용합니다.\",\"conditions\":[],\"questions\":[]}",
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 3239,
+        "createdAt": "2026-10-09T07:07:47.303Z"
+      },
+      "candidate": {
+        "productId": "P1",
+        "version": 2,
+        "effectiveDate": "2026-10-09",
+        "changes": {
+          "rate": 3.76
+        },
+        "evidence": [
+          {
+            "field": "rate",
+            "quote": "대출 금리가 3.76%로 변경되었습니다."
+          },
+          {
+            "field": "effectiveDate",
+            "quote": "2026-10-09부터 적용합니다."
+          }
+        ]
+      },
+      "expectedProductVersion": 1,
+      "aiInterpretation": {
+        "summary": "대출 금리가 변경되었습니다.",
+        "changes": [
+          {
+            "field": "rate",
+            "value": 3.76,
+            "quote": "대출 금리가 3.76%로 변경되었습니다."
+          }
+        ],
+        "effectiveDate": "2026-10-09",
+        "dateQuote": "2026-10-09부터 적용합니다.",
+        "conditions": [],
+        "questions": [],
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 3239,
+        "createdAt": "2026-10-09T07:07:47.303Z",
+        "checks": [
+          {
+            "id": "date",
+            "label": "적용일 근거",
+            "status": "passed",
+            "detail": "원문의 적용일 2026-10-09를 대조했습니다."
+          },
+          {
+            "id": "scope",
+            "label": "고객 범위·조건",
+            "status": "passed",
+            "detail": "모든 고객에 동일 적용하는 단순 공지입니다."
+          },
+          {
+            "id": "source-safety",
+            "label": "원문 지시·불확실성",
+            "status": "passed",
+            "detail": "원문에서 제한된 의심 표현 검사를 통과했습니다."
+          },
+          {
+            "id": "binding",
+            "label": "상품 식별자",
+            "status": "passed",
+            "detail": "P1: 요청과 원문 식별자가 일치합니다."
+          },
+          {
+            "id": "quotes",
+            "label": "변경값 원문 인용",
+            "status": "failed",
+            "detail": "변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다."
+          },
+          {
+            "id": "values",
+            "label": "수치·의미 대조",
+            "status": "passed",
+            "detail": "수치의 단일성·범위와 변경 항목 누락을 대조했습니다."
+          },
+          {
+            "id": "snapshot",
+            "label": "원문·DB 스냅샷",
+            "status": "passed",
+            "detail": "서버가 저장한 원문 해시·리비전·현재 상품 DB가 일치합니다."
+          }
+        ]
+      },
+      "status": "held",
+      "reason": "변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "before": {
+        "id": "P1",
+        "name": "합성 생활대출 1",
+        "bank": "가상한결은행",
+        "rate": 4.5,
+        "limit": 50000000,
+        "reviewId": "DEMO-2026-1",
+        "active": true,
+        "version": 1,
+        "updatedAt": "2026-10-09T07:05:36.099Z"
+      },
+      "after": null,
+      "updatedAt": "2026-10-09T07:07:47.305Z",
+      "completedAt": "2026-10-09T07:07:47.305Z",
+      "steps": [
+        {
+          "name": "source",
+          "status": "completed",
+          "at": "2026-10-09T07:07:44.064Z"
+        },
+        {
+          "name": "extract",
+          "status": "completed",
+          "at": "2026-10-09T07:07:47.303Z"
+        },
+        {
+          "name": "validate",
+          "status": "failed",
+          "at": "2026-10-09T07:07:47.305Z"
+        },
+        {
+          "name": "review",
+          "status": "skipped",
+          "at": "2026-10-09T07:07:47.305Z"
+        }
+      ]
+    },
+    {
+      "id": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-d0088e3f-2e55-42b6-ad3d-f71403956320",
+      "noticeId": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-1-new-4506ecee-12e9-45fd-9e0c-6cfb7d251679",
+      "productId": "P1",
+      "sourceType": "official-synthetic",
+      "sourceText": "[가상한결은행 · 합성 자료]\n생활대출 P1 상품 변경 안내\n2026-10-09부터 적용합니다.\n대출 금리가 3.76%로 변경되었습니다.\n이 안내는 모든 고객에게 동일하게 적용됩니다.",
+      "sourceChannel": "llm",
+      "executionId": null,
+      "sourceRevision": 1,
+      "sourceHash": "9cf4834f28e60566a11dffc5ee7b50da2fa2958520197b0d9274d99bbb3e9bbf",
+      "receivedAt": "2026-10-09T07:08:22.439Z",
+      "aiSnapshot": {
+        "epoch": "ff60204f-4aeb-4f43-9894-61d27c515fa3",
+        "productId": "P1",
+        "noticeId": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-1-new-4506ecee-12e9-45fd-9e0c-6cfb7d251679",
+        "sourceType": "official-synthetic",
+        "sourceHash": "9cf4834f28e60566a11dffc5ee7b50da2fa2958520197b0d9274d99bbb3e9bbf",
+        "sourceRevision": 1,
+        "expectedProductVersion": 1,
+        "productSnapshot": {
+          "id": "P1",
+          "name": "합성 생활대출 1",
+          "bank": "가상한결은행",
+          "rate": 4.5,
+          "limit": 50000000,
+          "reviewId": "DEMO-2026-1",
+          "active": true,
+          "version": 1,
+          "updatedAt": "2026-10-09T07:05:36.099Z"
+        },
+        "analysis": {
+          "summary": "대출 금리가 변경되었습니다.",
+          "changes": [
+            {
+              "field": "rate",
+              "value": 3.76,
+              "quote": "대출 금리가 3.76%로 변경되었습니다."
+            }
+          ],
+          "effectiveDate": "2026-10-09",
+          "dateQuote": "2026-10-09부터 적용합니다.",
+          "conditions": [],
+          "questions": []
+        },
+        "modelResponse": "{\"summary\":\"대출 금리가 변경되었습니다.\",\"changes\":[{\"field\":\"rate\",\"value\":3.76,\"quote\":\"대출 금리가 3.76%로 변경되었습니다.\"}],\"effectiveDate\":\"2026-10-09\",\"dateQuote\":\"2026-10-09부터 적용합니다.\",\"conditions\":[],\"questions\":[]}",
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 2553,
+        "createdAt": "2026-10-09T07:08:24.992Z"
+      },
+      "candidate": {
+        "productId": "P1",
+        "version": 2,
+        "effectiveDate": "2026-10-09",
+        "changes": {
+          "rate": 3.76
+        },
+        "evidence": [
+          {
+            "field": "rate",
+            "quote": "대출 금리가 3.76%로 변경되었습니다."
+          },
+          {
+            "field": "effectiveDate",
+            "quote": "2026-10-09부터 적용합니다."
+          }
+        ]
+      },
+      "expectedProductVersion": 1,
+      "aiInterpretation": {
+        "summary": "대출 금리가 변경되었습니다.",
+        "changes": [
+          {
+            "field": "rate",
+            "value": 3.76,
+            "quote": "대출 금리가 3.76%로 변경되었습니다."
+          }
+        ],
+        "effectiveDate": "2026-10-09",
+        "dateQuote": "2026-10-09부터 적용합니다.",
+        "conditions": [],
+        "questions": [],
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 2553,
+        "createdAt": "2026-10-09T07:08:24.992Z",
+        "checks": [
+          {
+            "id": "date",
+            "label": "적용일 근거",
+            "status": "passed",
+            "detail": "원문의 적용일 2026-10-09를 대조했습니다."
+          },
+          {
+            "id": "scope",
+            "label": "고객 범위·조건",
+            "status": "passed",
+            "detail": "모든 고객에 동일 적용하는 단순 공지입니다."
+          },
+          {
+            "id": "source-safety",
+            "label": "원문 지시·불확실성",
+            "status": "passed",
+            "detail": "원문에서 제한된 의심 표현 검사를 통과했습니다."
+          },
+          {
+            "id": "binding",
+            "label": "상품 식별자",
+            "status": "passed",
+            "detail": "P1: 요청과 원문 식별자가 일치합니다."
+          },
+          {
+            "id": "quotes",
+            "label": "변경값 원문 인용",
+            "status": "passed",
+            "detail": "각 변경값의 인용문이 원문에 그대로 있습니다."
+          },
+          {
+            "id": "values",
+            "label": "수치·의미 대조",
+            "status": "passed",
+            "detail": "수치의 단일성·범위와 변경 항목 누락을 대조했습니다."
+          },
+          {
+            "id": "snapshot",
+            "label": "원문·DB 스냅샷",
+            "status": "passed",
+            "detail": "서버가 저장한 원문 해시·리비전·현재 상품 DB가 일치합니다."
+          }
+        ]
+      },
+      "status": "applied",
+      "reason": "담당자 승인 후 SQLite 트랜잭션으로 반영했습니다.",
+      "before": {
+        "id": "P1",
+        "name": "합성 생활대출 1",
+        "bank": "가상한결은행",
+        "rate": 4.5,
+        "limit": 50000000,
+        "reviewId": "DEMO-2026-1",
+        "active": true,
+        "version": 1,
+        "updatedAt": "2026-10-09T07:05:36.099Z"
+      },
+      "after": {
+        "id": "P1",
+        "name": "합성 생활대출 1",
+        "bank": "가상한결은행",
+        "rate": 3.76,
+        "limit": 50000000,
+        "reviewId": "DEMO-2026-1",
+        "active": true,
+        "version": 2,
+        "updatedAt": "2026-10-09T07:14:35.263Z"
+      },
+      "updatedAt": "2026-10-09T07:14:35.263Z",
+      "completedAt": "2026-10-09T07:14:35.263Z",
+      "steps": [
+        {
+          "name": "source",
+          "status": "completed",
+          "at": "2026-10-09T07:08:22.439Z"
+        },
+        {
+          "name": "extract",
+          "status": "completed",
+          "at": "2026-10-09T07:08:24.992Z"
+        },
+        {
+          "name": "validate",
+          "status": "completed",
+          "at": "2026-10-09T07:08:24.993Z"
+        },
+        {
+          "name": "review",
+          "status": "waiting",
+          "at": "2026-10-09T07:08:24.993Z"
+        },
+        {
+          "name": "review",
+          "status": "approved",
+          "at": "2026-10-09T07:14:35.263Z"
+        },
+        {
+          "name": "apply",
+          "status": "completed",
+          "at": "2026-10-09T07:14:35.263Z"
+        }
+      ]
+    },
+    {
+      "id": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-9b32d44a-4dc4-45c6-9344-5e1293433e08",
+      "noticeId": "ai-conditional-ff60204f-4aeb-4f43-9894-61d27c515fa3-2",
+      "productId": "P1",
+      "sourceType": "official-synthetic",
+      "sourceText": "[가상한결은행 · 합성 자료]\n생활대출 P1 상품 변경 안내\n2026-10-09부터 적용합니다.\n신규 가입 고객에게만 대출 금리 3.76%를 적용합니다.\n이 안내는 모든 고객에게 동일하게 적용됩니다.",
+      "sourceChannel": "llm",
+      "executionId": null,
+      "sourceRevision": 1,
+      "sourceHash": "cf20b5354cf479bed8e6234765fd5a031db6b96dd5d16f05d9906a23f059bf56",
+      "receivedAt": "2026-10-09T07:14:43.897Z",
+      "aiSnapshot": {
+        "epoch": "ff60204f-4aeb-4f43-9894-61d27c515fa3",
+        "productId": "P1",
+        "noticeId": "ai-conditional-ff60204f-4aeb-4f43-9894-61d27c515fa3-2",
+        "sourceType": "official-synthetic",
+        "sourceHash": "cf20b5354cf479bed8e6234765fd5a031db6b96dd5d16f05d9906a23f059bf56",
+        "sourceRevision": 1,
+        "expectedProductVersion": 2,
+        "productSnapshot": {
+          "id": "P1",
+          "name": "합성 생활대출 1",
+          "bank": "가상한결은행",
+          "rate": 3.76,
+          "limit": 50000000,
+          "reviewId": "DEMO-2026-1",
+          "active": true,
+          "version": 2,
+          "updatedAt": "2026-10-09T07:14:35.263Z"
+        },
+        "analysis": {
+          "summary": "대출 금리가 변경됩니다.",
+          "changes": [
+            {
+              "field": "rate",
+              "value": 3.76,
+              "quote": "대출 금리 3.76%로 변경합니다."
+            }
+          ],
+          "effectiveDate": "2026-10-09",
+          "dateQuote": "2026-10-09부터 적용합니다.",
+          "conditions": [],
+          "questions": []
+        },
+        "modelResponse": "{\"summary\":\"대출 금리가 변경됩니다.\",\"changes\":[{\"field\":\"rate\",\"value\":3.76,\"quote\":\"대출 금리 3.76%로 변경합니다.\"}],\"effectiveDate\":\"2026-10-09\",\"dateQuote\":\"2026-10-09부터 적용합니다.\",\"conditions\":[],\"questions\":[]}",
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 2327,
+        "createdAt": "2026-10-09T07:14:46.224Z"
+      },
+      "candidate": {
+        "productId": "P1",
+        "version": 3,
+        "effectiveDate": "2026-10-09",
+        "changes": {
+          "rate": 3.76
+        },
+        "evidence": [
+          {
+            "field": "rate",
+            "quote": "대출 금리 3.76%로 변경합니다."
+          },
+          {
+            "field": "effectiveDate",
+            "quote": "2026-10-09부터 적용합니다."
+          }
+        ]
+      },
+      "expectedProductVersion": 2,
+      "aiInterpretation": {
+        "summary": "대출 금리가 변경됩니다.",
+        "changes": [
+          {
+            "field": "rate",
+            "value": 3.76,
+            "quote": "대출 금리 3.76%로 변경합니다."
+          }
+        ],
+        "effectiveDate": "2026-10-09",
+        "dateQuote": "2026-10-09부터 적용합니다.",
+        "conditions": [],
+        "questions": [],
+        "model": "notice-reader",
+        "provider": "llama.cpp (local)",
+        "elapsedMs": 2327,
+        "createdAt": "2026-10-09T07:14:46.224Z",
+        "checks": [
+          {
+            "id": "date",
+            "label": "적용일 근거",
+            "status": "passed",
+            "detail": "원문의 적용일 2026-10-09를 대조했습니다."
+          },
+          {
+            "id": "scope",
+            "label": "고객 범위·조건",
+            "status": "failed",
+            "detail": "고객 조건 또는 적용 범위가 확인되지 않았습니다. 고객 범위 DB가 없어 수동 확인이 필요합니다."
+          },
+          {
+            "id": "source-safety",
+            "label": "원문 지시·불확실성",
+            "status": "passed",
+            "detail": "원문에서 제한된 의심 표현 검사를 통과했습니다."
+          },
+          {
+            "id": "binding",
+            "label": "상품 식별자",
+            "status": "passed",
+            "detail": "P1: 요청과 원문 식별자가 일치합니다."
+          },
+          {
+            "id": "quotes",
+            "label": "변경값 원문 인용",
+            "status": "failed",
+            "detail": "변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다."
+          },
+          {
+            "id": "values",
+            "label": "수치·의미 대조",
+            "status": "passed",
+            "detail": "수치의 단일성·범위와 변경 항목 누락을 대조했습니다."
+          },
+          {
+            "id": "snapshot",
+            "label": "원문·DB 스냅샷",
+            "status": "passed",
+            "detail": "서버가 저장한 원문 해시·리비전·현재 상품 DB가 일치합니다."
+          }
+        ]
+      },
+      "status": "held",
+      "reason": "고객 조건 또는 적용 범위가 확인되지 않았습니다. 고객 범위 DB가 없어 수동 확인이 필요합니다. 변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "before": {
+        "id": "P1",
+        "name": "합성 생활대출 1",
+        "bank": "가상한결은행",
+        "rate": 3.76,
+        "limit": 50000000,
+        "reviewId": "DEMO-2026-1",
+        "active": true,
+        "version": 2,
+        "updatedAt": "2026-10-09T07:14:35.263Z"
+      },
+      "after": null,
+      "updatedAt": "2026-10-09T07:14:46.224Z",
+      "completedAt": "2026-10-09T07:14:46.224Z",
+      "steps": [
+        {
+          "name": "source",
+          "status": "completed",
+          "at": "2026-10-09T07:14:43.897Z"
+        },
+        {
+          "name": "extract",
+          "status": "completed",
+          "at": "2026-10-09T07:14:46.224Z"
+        },
+        {
+          "name": "validate",
+          "status": "failed",
+          "at": "2026-10-09T07:14:46.224Z"
+        },
+        {
+          "name": "review",
+          "status": "skipped",
+          "at": "2026-10-09T07:14:46.224Z"
+        }
+      ]
+    },
+    {
+      "id": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-64bac8a6-b186-40d3-9757-80d8145b492c",
+      "noticeId": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-2",
+      "productId": "P1",
+      "sourceType": "official-synthetic",
+      "sourceText": "[가상한결은행 · 합성 자료]\n생활대출 P1 상품 변경 안내\n2026-10-09부터 적용합니다.\n대출 금리가 3.82%로 변경되었습니다.\n이 안내는 모든 고객에게 동일하게 적용됩니다.ㄱ",
+      "sourceChannel": "llm",
+      "executionId": null,
+      "sourceRevision": 2,
+      "sourceHash": "cf85ce57587a819cec4bfb20d43cdfc4ebd796e73b6240804a37ef6437067bb0",
+      "receivedAt": "2026-10-09T07:15:03.385Z",
+      "aiSnapshot": null,
+      "candidate": null,
+      "expectedProductVersion": 2,
+      "aiInterpretation": null,
+      "status": "held",
+      "reason": "원문이 변경되어 이전 AI 해석이 무효입니다. 로컬 모델로 다시 분석하세요.",
+      "before": {
+        "id": "P1",
+        "name": "합성 생활대출 1",
+        "bank": "가상한결은행",
+        "rate": 3.76,
+        "limit": 50000000,
+        "reviewId": "DEMO-2026-1",
+        "active": true,
+        "version": 2,
+        "updatedAt": "2026-10-09T07:14:35.263Z"
+      },
+      "after": null,
+      "updatedAt": "2026-10-09T07:15:25.815Z",
+      "completedAt": "2026-10-09T07:15:25.815Z",
+      "steps": [
+        {
+          "name": "source",
+          "status": "completed",
+          "at": "2026-10-09T07:15:03.385Z"
+        },
+        {
+          "name": "extract",
+          "status": "completed",
+          "at": "2026-10-09T07:15:05.735Z"
+        },
+        {
+          "name": "validate",
+          "status": "completed",
+          "at": "2026-10-09T07:15:05.736Z"
+        },
+        {
+          "name": "review",
+          "status": "waiting",
+          "at": "2026-10-09T07:15:05.736Z"
+        }
+      ]
+    }
+  ],
+  "tickets": [
+    {
+      "id": "ticket-ff60204f-4aeb-4f43-9894-61d27c515fa3-8b94957e-fbb8-49f5-90b9-8699a3accb77",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-3f92d3c3-24ea-4965-bb07-bafe25dfc564",
+      "title": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-1-new-f7938ed6-2524-4dd8-9c05-157d01893b7f: 확인 필요",
+      "status": "open",
+      "owner": "demo-reviewer",
+      "dueAt": "2026-10-10T07:07:47.305Z",
+      "reason": "변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "mode": "local"
+    },
+    {
+      "id": "ticket-ff60204f-4aeb-4f43-9894-61d27c515fa3-a49cd580-04ef-4f4c-ae66-c37199d3b879",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-9b32d44a-4dc4-45c6-9344-5e1293433e08",
+      "title": "ai-conditional-ff60204f-4aeb-4f43-9894-61d27c515fa3-2: 확인 필요",
+      "status": "open",
+      "owner": "demo-reviewer",
+      "dueAt": "2026-10-10T07:14:46.225Z",
+      "reason": "고객 조건 또는 적용 범위가 확인되지 않았습니다. 고객 범위 DB가 없어 수동 확인이 필요합니다. 변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "mode": "local"
+    },
+    {
+      "id": "ticket-ff60204f-4aeb-4f43-9894-61d27c515fa3-8ae13b9e-9cae-4d4f-aa25-2b285b0c69af",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-64bac8a6-b186-40d3-9757-80d8145b492c",
+      "title": "ai-normal-ff60204f-4aeb-4f43-9894-61d27c515fa3-2: 확인 필요",
+      "status": "open",
+      "owner": "demo-reviewer",
+      "dueAt": "2026-10-10T07:15:25.815Z",
+      "reason": "원문 변경으로 재검토가 필요합니다.",
+      "mode": "local"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-7dc3ca88-b455-46c6-847e-7a2855d91dcc",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-3f92d3c3-24ea-4965-bb07-bafe25dfc564",
+      "type": "received",
+      "message": "실제 로컬 LLM으로 합성 자연어 공지를 분석했습니다.",
+      "at": "2026-10-09T07:07:47.305Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-9fd01cb8-c8ba-4f3b-9d22-a64ed6763719",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-3f92d3c3-24ea-4965-bb07-bafe25dfc564",
+      "type": "held",
+      "message": "변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "at": "2026-10-09T07:07:47.305Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-d274e07e-bfdf-4f35-a5d3-65227245a1fa",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-d0088e3f-2e55-42b6-ad3d-f71403956320",
+      "type": "received",
+      "message": "실제 로컬 LLM으로 합성 자연어 공지를 분석했습니다.",
+      "at": "2026-10-09T07:08:24.993Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-157d8505-779e-4cc6-879b-04d676345529",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-d0088e3f-2e55-42b6-ad3d-f71403956320",
+      "type": "pending",
+      "message": "실제 로컬 LLM 해석과 제한된 원문 검증을 통과했습니다. 담당자 승인이 필요합니다.",
+      "at": "2026-10-09T07:08:24.993Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-e196190b-2bf9-451e-aa03-cad18653ed99",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-d0088e3f-2e55-42b6-ad3d-f71403956320",
+      "type": "decision",
+      "message": "demo-reviewer: approve (결정 ID d06fe1ae-b365-4c12-9d22-37308d4ae0ec)",
+      "at": "2026-10-09T07:14:35.263Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-94346836-b9ef-4715-b8f6-fe2019f45235",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-d0088e3f-2e55-42b6-ad3d-f71403956320",
+      "type": "applied",
+      "message": "담당자 승인 후 SQLite 트랜잭션으로 반영했습니다.",
+      "at": "2026-10-09T07:14:35.263Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-d5188270-323b-4ec6-b0e3-f335d5f73583",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-9b32d44a-4dc4-45c6-9344-5e1293433e08",
+      "type": "received",
+      "message": "실제 로컬 LLM으로 합성 자연어 공지를 분석했습니다.",
+      "at": "2026-10-09T07:14:46.224Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-75df4865-c961-4412-8c9d-c0456a8da39e",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-9b32d44a-4dc4-45c6-9344-5e1293433e08",
+      "type": "held",
+      "message": "고객 조건 또는 적용 범위가 확인되지 않았습니다. 고객 범위 DB가 없어 수동 확인이 필요합니다. 변경값 없음·중복 필드·원문에 없는 인용문을 차단했습니다.",
+      "at": "2026-10-09T07:14:46.225Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-db20899c-6393-43cb-b191-cd64b83dfb8a",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-64bac8a6-b186-40d3-9757-80d8145b492c",
+      "type": "received",
+      "message": "실제 로컬 LLM으로 합성 자연어 공지를 분석했습니다.",
+      "at": "2026-10-09T07:15:05.736Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-5c67d249-aa8e-45c0-8ed8-42956786944d",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-64bac8a6-b186-40d3-9757-80d8145b492c",
+      "type": "pending",
+      "message": "실제 로컬 LLM 해석과 제한된 원문 검증을 통과했습니다. 담당자 승인이 필요합니다.",
+      "at": "2026-10-09T07:15:05.736Z"
+    },
+    {
+      "id": "event-ff60204f-4aeb-4f43-9894-61d27c515fa3-5cd5d8e3-6491-440f-993c-c5e72a7547c2",
+      "caseId": "case-ff60204f-4aeb-4f43-9894-61d27c515fa3-64bac8a6-b186-40d3-9757-80d8145b492c",
+      "type": "source-revised",
+      "message": "원문 수정: 검토 리비전 2, 이전 승인은 무효입니다.",
+      "at": "2026-10-09T07:15:25.815Z"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "storage",
+      "name": "SQLite",
+      "mode": "local",
+      "detail": "로컬 파일 영속 저장 · PostgreSQL 클라우드 연결은 향후 구성 항목"
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "mode": "off",
+      "detail": "실제 workflow 이벤트 수신 전 · 워크플로 JSON 가져오기 필요"
+    },
+    {
+      "id": "gmail",
+      "name": "Gmail",
+      "mode": "off",
+      "detail": "메일 계정 미연결 · 인증 후 n8n 수신 경로 사용 가능"
+    },
+    {
+      "id": "drive",
+      "name": "Google Drive",
+      "mode": "off",
+      "detail": "Drive 계정 미연결 · 파일 업로드를 수행하지 않음"
+    },
+    {
+      "id": "jira",
+      "name": "Jira",
+      "mode": "local",
+      "detail": "로컬 업무함 사용 · Jira 전송은 명시적 설정 후 활성화"
+    },
+    {
+      "id": "datadog",
+      "name": "Datadog",
+      "mode": "off",
+      "detail": "외부 지표 미전송 · 로컬 실측 지표만 표시"
+    }
+  ],
+  "metrics": {
+    "received": 4,
+    "pending": 0,
+    "applied": 1,
+    "exceptions": 3,
+    "scheduled": 0,
+    "research": 0,
+    "duplicateReceipts": 0,
+    "completedCount": 4,
+    "elapsedMsAverage": 100206,
+    "automationEvents": 0
+  }
+}
