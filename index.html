@@ -7,14 +7,14 @@
   <link rel="stylesheet" href="ops.css">
   <link rel="stylesheet" href="ops-map.css">
 </head>
-<body>
+<body class="ops-console">
   <header class="topbar">
-    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">↗</span><span>금융상품 운영실<small>PRODUCT OPERATIONS LAB</small></span></a>
+    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">PO</span><span>금융상품 운영실<small>PRODUCT OPERATIONS LAB</small></span></a>
     <div class="top-actions"><span class="demo-tag">합성 공지 · 실제 로컬 AI</span><button id="model-open" class="quiet" hidden>이전 추출 실험</button><button id="guide-open" class="quiet">읽는 방법 <span>?</span></button></div>
   </header>
   <main>
     <section class="intro">
-      <div><p class="eyebrow"><span class="live-dot"></span> 금융상품 정보가 바뀌는 과정을 직접 따라가세요</p><h1>공지 한 장이,<br class="mobile-break"> 고객의 금리가 되기까지.</h1><p class="lead">AI가 읽은 내용과 사람이 결정한 결과를 한눈에 확인합니다.</p></div>
+      <div><p class="eyebrow">NOTICE REVIEW / 상품 정보 운영</p><h1>금융상품 변경 검토</h1><p class="lead">공지 한 장이 고객의 금리가 되기까지, 근거와 승인 과정을 확인합니다.</p></div>
       <div class="intro-aside"><span class="date-tag">설계 확인일 <b>2026.10.09</b></span><p>뱅크샐러드 공고의 상품 정보 변경·DB 최신화 업무를 위해, AI가 공지를 읽고 담당자가 검토하는 운영실을 만들었습니다.</p><a href="https://banksalad.career.greetinghr.com/ko/o/91296" target="_blank" rel="noreferrer">공고 업무 확인 ↗</a></div>
     </section>
     <nav class="ops-mode-nav" aria-label="실험 모드"><button id="ops-mode-live" class="active" aria-pressed="true">AI 공지 검토 <span>실제 모델 · 저장되는 실행</span></button><button id="ops-mode-simulation" aria-pressed="false">운영 조건 비교 <span>가상 시간 · 추출 모의</span></button><span class="ops-mode-note">가상 은행·합성 공지로 직접 실행합니다</span></nav>
@@ -23,7 +23,7 @@
       <div id="ops-flow" class="ops-flow" aria-label="선택한 공지의 처리 단계" hidden></div>
       <div class="ops-record-strip"><span>접수한 공지</span><span id="ops-case-count" class="tiny-pill">0건</span><div id="ops-case-list" class="ops-case-list" aria-label="접수한 공지 선택"></div></div>
       <section class="ops-map-shell" aria-label="금융상품 변경 업무 지도">
-        <div class="ops-map-toolbar"><div><span class="ops-map-scenarios-label">실제 기록으로 흐름 살펴보기</span><button id="ops-map-normal" class="ops-map-scenario">정상 변경</button><button id="ops-map-held" class="ops-map-scenario">조건 누락·보류</button></div><button id="ops-map-new" class="primary">새 공지 시험하기 <span>↗</span></button></div>
+        <div class="ops-map-toolbar"><div><span class="ops-map-scenarios-label">실제 기록으로 흐름 살펴보기</span><button id="ops-map-normal" class="ops-map-scenario">정상 변경</button><button id="ops-map-held" class="ops-map-scenario">확인 필요·보류</button></div><button id="ops-map-new" class="primary">새 공지 시험하기 <span>↗</span></button></div>
         <div id="ops-map"></div>
       </section>
       <details id="ops-inspection" class="ops-inspection">
