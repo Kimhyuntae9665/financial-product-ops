@@ -19,3 +19,4 @@ node_modules/
 *.key
 .DS_Store
 Thumbs.db
+agent/.runtime.json

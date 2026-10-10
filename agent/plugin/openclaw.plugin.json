@@ -1,0 +1,1 @@
+{"id":"finance-ops-agent","name":"Financial Product Agent","description":"Bounded finance tools with persisted human approval","kind":"tools","contracts":{"tools":["finance_sources","finance_fetch","finance_snapshot","finance_propose","finance_apply","finance_report"]},"activation":{"onStartup":true},"configSchema":{"type":"object","properties":{},"additionalProperties":false}}

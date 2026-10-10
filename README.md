@@ -1,59 +1,95 @@
-# 금융상품 운영실 · AI 공지 검토
+# 금융상품 운영 Agent · 공지 조사와 승인 후 반영
 
-**금융사 공지를 AI가 읽고, 코드가 검증하고, 담당자가 승인하면 상품 DB와 가상 고객 화면이 바뀌는 실행형 데모입니다.**
+**AI가 공지를 조사·해석하고, 담당자가 승인한 건을 Agent에 반영 요청하면 상품 DB와 가상 고객 화면이 바뀌는 실행형 데모입니다.**
 
 뱅크샐러드 [AI Native Operation Manager 공고](https://banksalad.career.greetinghr.com/ko/o/91296)의 **상품 정보 변경·상품 DB 최신화 업무를 위해, 자연어 공지에서 변경값과 적용 조건을 읽어 담당자의 검토를 돕는 운영실을 만들었습니다.**
 
 가상 금융사와 합성 공지를 사용한 개인 포트폴리오입니다. **로컬 LLM 추론, 검증, 승인, SQLite 저장은 실제로 실행**되며, 고객 화면은 승인된 데모 DB를 조회합니다.
 
-**[최신 3페이지 포트폴리오 PDF](docs/portfolio/financial-product-ops-portfolio.pdf)** · **[▶ 초기 UI 시연 영상](https://youtu.be/XPwjsHmasuI)** · [UI 선택과 검수 범위](docs/ui-design.md) · [검수 기록](VERIFICATION.md)
+**[이전 UI의 3페이지 포트폴리오 PDF](docs/portfolio/financial-product-ops-portfolio.pdf)** · **[▶ 초기 UI 시연 영상](https://youtu.be/XPwjsHmasuI)** · [현재 UI의 조합과 검수](docs/ui-combination.md) · [검수 기록](VERIFICATION.md)
 
-## 현재 UI · AI가 맡는 구간부터 승인 결과까지
+## OpenClaw Agent · 현재 구현
 
-<table><tr><td><img src="docs/screenshots/ui-refined-pending.jpg" alt="개선 UI의 다섯 단계 흐름: AI 후보 3.76%, 검증 통과, 담당자 판단 대기, 현재 DB 금리 4.50%" width="1100"></td></tr></table>
+공고의 경쟁상품 조건 추적·상품 DB 최신화 업무를 위해, **OpenClaw에 직접 만든 금융 도구 6개를 붙여 공지 조사와 승인 후 반영을 수행하는 Agent**를 만들었습니다. Qwen이 실제 `tool_calls`로 다음 도구와 입력을 선택하고, Node.js가 도구를 실행해 결과를 돌려줍니다.
 
-*승인 전 — 파란 3.76%는 AI가 읽은 변경 후보, 초록 4.50%는 현재 DB 값입니다. AI 카드 아래 빨간 **“AI는 여기까지”**는 후보와 근거를 만드는 구간을 표시합니다. 다음 단계는 코드 검증과 담당자 판단입니다.*
+**AI:** 도구 선택 → 반환 원문 읽기 → 금리·적용일·정확한 근거 제안.<br>
+**프로그램:** HTTP 수집 → 근거·출처·버전 검증 → 승인 재확인 → SQLite 저장.<br>
+**사람:** 원문과 제안을 대조해 승인·보류. AI에는 승인 도구를 주지 않습니다.
 
-### 60초 안에 볼 핵심
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/agent-pending.png" alt="실제 OpenClaw Agent의 공지 수집·DB 조회·변경 제안 도구 호출과 승인 전 현재 금리 4.5%" width="1100"></td></tr></table>
 
-| 순서 | 볼 곳 | 확인할 내용 |
-|---|---|---|
-| 1 | 다섯 단계 흐름 | 원문 → AI 후보 → 코드 검증 → 담당자 판단 → 현재 DB 순서로 읽습니다. |
-| 2 | AI 카드 아래 빨간 경계 | AI는 후보·근거 생성까지 맡습니다. 검증 통과와 DB 반영은 별도 단계입니다. |
-| 3 | 네 칸 검토 작업대 | 원문·인용·검증·승인 행동을 나란히 대조합니다. |
-| 4 | 승인·원문 변경 화면 | 승인 후 DB 갱신과, 오래된 해석의 반영 중지를 비교합니다. |
+*읽는 순서 — 위의 연결선으로 전체 흐름을 보고, 가운데 원문 → 빨간 AI 후보 → 코드 검증 → 사람 판단을 대조합니다. 아래에는 실제 호출의 입력·반환값이 남습니다. 캡처 시 제안은 3.76%, 현재 DB는 4.5%였습니다. 도구 실행 시간은 Node.js 처리시간이며 모델의 추론시간과 다릅니다.*
 
-### 원문과 AI 해석을 나란히 검토합니다
+모델은 Tailscale로 연결된 별도 PC에서 실행하고, 이 PC에는 OpenClaw·검토 화면·도구·DB를 둡니다. RAM을 합치는 구조가 아닌 **모델 추론 분리**입니다. SSH 모델 중계는 고정 모델의 세 API 경로만 전달합니다. 원격 실행과 모델 검수의 실제 결과는 [검수 기록](VERIFICATION.md), 설정·도구 권한·실행 방법은 [Agent 설명](docs/openclaw-agent.md)에 구분해 기록합니다.
 
-합성 공지를 입력하고 **AI로 공지 읽기**를 누르면 실제 Qwen 모델이 변경값·인용문·적용일·조건·질문을 생성합니다. 각 단계 카드를 누르면 아래 네 칸 작업대로 이동해 근거를 확인할 수 있습니다.
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/agent-applied.png" alt="실제 Agent finance_apply 호출 성공과 현재 고객 화면 금리 3.76%, DB 버전2, 모델 실행 정상 완료" width="1100"></td></tr></table>
 
-<table><tr><td><img src="docs/screenshots/ui-refined-review.jpg" alt="현재 UI의 네 칸 검토 작업대: 접수 원문, 실제 Qwen 해석, 독립 코드 검증, 담당자 승인과 보류" width="1100"></td></tr></table>
+*실제 반영 — 담당자 승인 이후 별도 Agent 실행이 `finance_apply`를 호출했습니다. 현재 DB와 고객 화면은 3.76% / v2이며, 모델 실행도 정상 완료했습니다. 자동 검사 140/140 통과는 별도의 코드·권한 검사이며 모델 정확도 점수가 아닙니다.*
 
-*검토 작업대 — 왼쪽부터 원문, AI가 읽은 내용, 서버 코드의 검증 결과, 담당자 판단입니다. 원문 근거를 눌러 인용 위치를 확인하고, 승인 전 현재 금리와 후보 금리를 비교합니다. “별도 제한 미추출”은 모델이 별도 조건을 추출하지 않았다는 뜻입니다.*
+### 공지가 바뀌면 이전 승인으로 반영할 수 없습니다
 
-### 승인하면 DB와 고객 화면이 바뀝니다
+새 3.91% 공지를 Agent가 읽고 제안한 뒤 사람이 승인했습니다. 반영 전에 공지를 3.82%로 수정하자 승인이 무효가 됐습니다. 화면의 반영 버튼이 막혔고, 별도로 실행한 **실제 Agent의 `finance_apply` 호출도 `HUMAN_APPROVAL_REQUIRED`로 거절**됐습니다. 고객 DB는 3.76% / v2를 유지했습니다.
 
-**확인한 변경 승인**을 누르면 서버가 원문 해시·리비전·현재 DB 버전을 다시 검사합니다. 상품 변경과 결정 기록을 하나의 SQLite 트랜잭션으로 저장합니다.
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/agent-tool-trace.png" alt="공지 수정으로 무효가 된 승인, 실제 Agent finance_apply 입력과 거절 반환값, 유지된 고객 금리 3.76%" width="1100"></td></tr></table>
 
-<table><tr><td><img src="docs/screenshots/ui-refined-approved.jpg" alt="현재 UI에서 담당자 승인 완료 후 상품 DB 금리 3.76%, DB 버전 v2로 변경된 실제 화면" width="1100"></td></tr></table>
+*실패를 읽는 순서 — 가운데 재조사 안내 → 오른쪽 유지된 고객 금리 → 아래 펼친 도구 입력·반환값을 확인합니다. 모델 실행은 정상 종료했지만 업무 결과는 차단입니다. [실제 호출 기록 JSON](docs/agent-demo-run.json)에는 정상 조사·반영과 이 차단 결과를 함께 보존했습니다.*
 
-*승인 후 — 같은 검수용 DB의 4.50% v1이 3.76% v2로 변경됐습니다. 가상 고객 화면도 현재 DB를 조회합니다. 반복 실행의 초기값은 저장된 기록에 따라 달라집니다.*
+실측 전체 실행시간은 새 공지 조사 **205.7초**, 승인 후 반영 **152.6초**였습니다. OpenClaw 시작·모델 추론·SSH 전달·마지막 답변을 포함하며, 도구 자체의 몇 ms 처리시간과 다릅니다. 모델의 마지막 문장이 금리 하락을 ‘인상’으로 표현한 사례도 그대로 보존했습니다. 이 설명은 **미검증 모델 답변**으로 표시하며 DB 값이나 성공 판정에 사용하지 않습니다.
 
-### 원문이 바뀌면 이전 해석과 승인을 멈춥니다
+```powershell
+# 자동 검사 (Node.js 24)
+node --test
 
-새 공지의 3.91% 후보를 검토하다 원문을 3.82%로 수정하면 이전 AI 해석을 폐기합니다. **이전 검토로 승인 시도**는 거절되며 현재 원문을 다시 분석해야 합니다.
+# 설치 및 로컬 작은 모델 실험용 실행
+powershell -NoProfile -File agent/start.ps1 -Install
+```
 
-<table><tr><td><img src="docs/screenshots/ui-refined-stale.jpg" alt="현재 UI에서 원문 r2 변경으로 AI 해석이 무효화되고 승인 경로가 중지되며 기존 DB 3.76% v2가 유지된 화면" width="1100"></td></tr></table>
+콘솔: <http://127.0.0.1:4330/>. **1.7B 로컬 모델의 전체 업무 성공을 보장하지 않습니다.** 실제 검수에는 Qwen3-4B를 사용하며 원격 실행 절차를 별도로 제공합니다. 24시간 감시와 n8n은 현재 범위에 포함되지 않습니다. 아래 PDF·영상과 기존 운영실 화면은 앞선 단일 분석 방식의 기록입니다.
 
-*원문 수정 — “재분석 필요”와 “승인 경로 중지”가 표시됩니다. 이전 검토를 재사용하지 않으며 고객 DB는 3.76% v2를 유지합니다.*
+## 이전 운영실 UI · 공지에서 상품 정보까지
 
-### 모델이 응답하지 않아도 DB는 유지합니다
+**한눈에 흐름을 보고, 근거를 확인한 뒤, 바로 옆에서 결정합니다.** 간결한 연결선, 문서의 공간감, 근거를 펼쳐 보는 구성을 금융상품 정보 변경 업무에 맞춰 조합했습니다.
 
-<table><tr><td><img src="docs/screenshots/ui-refined-error.jpg" alt="현재 UI에서 실제 로컬 모델 요청 실패를 표시하고 샘플 응답을 만들지 않으며 기존 상품 DB를 유지한 화면" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/ui-combined-pending.jpg" alt="실제 Qwen 분석 후 3.76% 후보, 검사 7/7 통과, 담당자 승인 대기와 기존 DB 4.50% v1" width="1100"></td></tr></table>
 
-*모델 오류 — 최근 분석 요청 실패를 명시하고 기존 DB 3.76% v2를 유지합니다. 샘플 응답으로 대체하지 않습니다. 모델 실행 상태를 확인한 뒤 다시 분석할 수 있습니다.*
+*승인 전 — 빨간 3.76%는 AI의 변경 후보, 초록 4.50%는 현재 DB 값입니다. ‘AI는 여기까지’ 경계는 후보·원문 근거 생성까지를 표시합니다. 이 화면은 실제 검수 중 저장한 상태이며 이후 초기화한 로컬 실행과 건수는 다를 수 있습니다.*
 
-개선 UI는 1280px 데스크톱에서 핵심 조작과 화면을 확인했습니다. 반응형 CSS는 포함되어 있으나 이번 브라우저의 크기 변경이 실제 모바일 뷰포트에 적용되지 않아 **개선 UI의 모바일 육안 검수는 남아 있습니다.** 자세한 선택 근거와 검수 범위는 [UI 디자인 기록](docs/ui-design.md)을 확인하세요.
+| 먼저 볼 곳 | 확인할 내용 |
+|---|---|
+| 가운데 큰 업무 지도 | 공지 → AI 후보 → 코드 검사 → 담당자 판단 → DB 순서와 선택한 공지의 실제 위치 |
+| 빨간 AI 영역 | 모델이 읽은 후보·근거·적용일. 검증과 최종 결정은 별도 역할 |
+| 오른쪽 검토 패널 | 검토 기준값과 후보값을 비교하고 승인·보류. 원문 r과 DB v를 구분 |
+| 변경 근거 펼치기 | 원문, 실제 AI 응답, 독립된 코드 검사를 대조. 각 작업 지점을 눌러 이동 |
+
+### 근거를 세 층으로 대조합니다
+
+원문 인용을 누르면 보존된 원문의 해당 문장을 강조합니다. 새 분석용 초안은 접수한 원문과 분리했고, 이미 검토 중인 건의 수정은 오른쪽 ‘검토 중 원문 변경 시험’에서 합니다.
+
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/ui-combined-evidence.jpg" alt="접수 원문, 실제 Qwen 추론, 독립 코드 검사 7개를 나란히 대조하는 세 층 화면" width="1100"></td></tr></table>
+
+*왼쪽은 접수 원문, 빨간 가운데는 Qwen 응답, 오른쪽은 서버 코드의 검사입니다. 검사 통과는 담당자가 검토할 수 있다는 뜻이며 아직 DB 반영이 완료된 상태는 아닙니다.*
+
+### 승인한 값만 고객 화면으로 전달합니다
+
+서버는 승인 직전 원문 해시·리비전·현재 DB 버전을 다시 확인하고 SQLite 트랜잭션으로 변경과 결정 기록을 함께 저장합니다.
+
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/ui-combined-approved.jpg" alt="담당자 승인 후 실제 상품 DB 3.76% v2와 반영 완료 경로" width="1100"></td></tr></table>
+
+*실제 검수 — 4.50% v1 → 3.76% v2. 가상 고객 화면에서도 동일한 DB 값을 확인했습니다.*
+
+### 멈춰야 할 이유도 보입니다
+
+3.91% 후보를 검토하다 원문을 3.82%로 수정하면 이전 AI 해석을 폐기하고 재검토 경로로 이동합니다. 이전 검토로 승인하려는 요청은 거절됐고 DB 3.76% v2는 유지됐습니다.
+
+<table border="1" cellpadding="8"><tr><td><img src="docs/screenshots/ui-combined-stale.jpg" alt="원문 r2로 이전 AI 해석과 승인이 무효화되고 재분석 경로로 이동, DB는 3.76% v2 유지" width="1100"></td></tr></table>
+
+*갈색 경로 — 원문이 바뀌었으므로 새 분석이 필요합니다. 이전 후보·근거는 표시하지 않으며 현재 DB를 유지합니다.*
+
+모델 연결 오류는 샘플 답변으로 대체하지 않습니다. 작은 모델이 인용문이나 날짜 근거를 누락한 실제 사례도 검증 실패로 표시하고 승인을 막았습니다. [연결 오류](docs/screenshots/ui-combined-error.jpg) · [근거 실패](docs/screenshots/ui-combined-grounding-held.jpg).
+
+1280×720 데스크톱에서 핵심 조작과 가로 넘침을 확인했습니다. 반응형 CSS가 있으나 브라우저의 크기 변경이 적용되지 않아 **실제 모바일 육안 검수는 남아 있습니다.** 이 이전 UI 검수 시점의 소스 테스트는 63개 통과였습니다. 모델 정확도 측정으로 해석하지 않습니다. [설계 판단과 검수 범위](docs/ui-combination.md).
+
+기존 PDF와 영상은 이전 화면을 담고 있습니다. 이번 변경은 로컬 소스·UI·README·검수 캡처에 반영했습니다.
 
 <details>
 <summary><strong>초기 UI 시연 영상과 이전 화면 기록</strong></summary>
@@ -70,7 +106,7 @@
 
 합성 공지를 입력하고 **AI로 공지 읽기**를 누르면 실제 Qwen 모델이 변경값, 적용일, 조건, 확인할 질문을 생성합니다. 화면에 나온 답을 서버가 그대로 승인하지는 않습니다.
 
-<table><tr><td><img src="docs/images/02-notice-ai.png" alt="한국어 합성 원문과 실제 로컬 LLM이 읽은 변경 후보, 적용일, 근거 문장" width="563"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/02-notice-ai.png" alt="한국어 합성 원문과 실제 로컬 LLM이 읽은 변경 후보, 적용일, 근거 문장" width="563"></td></tr></table>
 
 *원문과 AI 해석 — 변경값뿐 아니라 그 값이 나온 문장을 함께 확인합니다. 모델이 잘못 읽은 내용도 결과에 그대로 드러납니다.*
 
@@ -78,7 +114,7 @@
 
 타입·허용 필드·수치·적용일·인용문·고객 범위 등을 검사합니다. 상품 식별자와 버전은 모델에 맡기지 않고 서버가 선택한 상품과 원문에 연결합니다.
 
-<table><tr><td><img src="docs/images/03-validation.png" alt="AI 변경 후보에 대한 원문 근거, 수치, 날짜, 조건, 스냅샷 검증 결과와 담당자 검토 대기" width="547"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/03-validation.png" alt="AI 변경 후보에 대한 원문 근거, 수치, 날짜, 조건, 스냅샷 검증 결과와 담당자 검토 대기" width="547"></td></tr></table>
 
 *검증 결과 — 통과 항목과 실패 이유를 볼 수 있습니다. 통과는 담당자가 검토할 수 있다는 뜻이며, 아직 상품 변경이 완료된 상태는 아닙니다.*
 
@@ -86,7 +122,7 @@
 
 **확인한 변경 승인**을 누르면 서버가 원문 해시·리비전·현재 DB 버전을 다시 검사합니다. 상품 변경과 결정 기록을 하나의 SQLite 트랜잭션으로 저장하고, 가상 고객 화면이 같은 DB의 결과를 읽습니다.
 
-<table><tr><td><img src="docs/images/04-approved.png" alt="담당자 승인 후 상품 DB 버전과 가상 고객 금리가 변경된 실제 실행 화면" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/04-approved.png" alt="담당자 승인 후 상품 DB 버전과 가상 고객 금리가 변경된 실제 실행 화면" width="1100"></td></tr></table>
 
 *승인 결과 — 새로운 데모 DB의 정상 사례는 4.50% → 3.76%로 바뀝니다. 반복 실행에서는 현재 DB 값과 입력 후보가 달라질 수 있습니다.*
 
@@ -94,14 +130,14 @@
 
 **조건 누락:** “신규 고객에게만 적용” 같은 제한을 모델이 놓치더라도 코드가 감지하면 보류합니다. 현재 구현은 모든 고객에게 적용하는 단순 공지를 중심으로 검증합니다.
 
-<table><tr><td><img src="docs/images/05-condition-held.png" alt="고객 적용 조건 누락을 검증 코드가 발견해 보류하고 기존 고객 금리를 유지한 화면" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/05-condition-held.png" alt="고객 적용 조건 누락을 검증 코드가 발견해 보류하고 기존 고객 금리를 유지한 화면" width="1100"></td></tr></table>
 
 *보류 결과 — 확인 업무가 생기며, 검증 실패한 후보는 고객 금리에 반영되지 않습니다.*
 
 <details>
 <summary><strong>조건 누락과 검증 실패를 상세 화면으로 확인하기</strong></summary>
 
-<table><tr><td><img src="docs/images/09-condition-detail.png" alt="신규 고객 조건을 누락한 실제 AI 해석과 고객 범위·원문 인용 검증 실패, 비활성 승인 버튼" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/09-condition-detail.png" alt="신규 고객 조건을 누락한 실제 AI 해석과 고객 범위·원문 인용 검증 실패, 비활성 승인 버튼" width="1100"></td></tr></table>
 
 *이번 실제 실행에서 AI는 고객 조건을 놓쳤고 인용문도 바꿨습니다. 코드가 두 항목을 차단해 상품 DB v2를 유지했습니다.*
 
@@ -109,19 +145,19 @@
 
 **검토 중 원문 변경:** 원문을 수정하면 이전 AI 해석을 폐기합니다. **이전 검토로 승인 시도**는 거절되며, 현재 원문을 다시 분석해야 합니다.
 
-<table><tr><td><img src="docs/images/06-stale-review.png" alt="원문 수정으로 이전 AI 해석이 무효화되고 오래된 검토의 승인이 차단된 화면" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/06-stale-review.png" alt="원문 수정으로 이전 AI 해석이 무효화되고 오래된 검토의 승인이 차단된 화면" width="1100"></td></tr></table>
 
 *오래된 검토 차단 — 원문의 리비전과 DB 버전이 분석 시점에 연결되어 있습니다. 과거 후보를 현재 상품에 덮어쓸 수 없습니다.*
 
 **모델 연결 실패:** 모델이 응답하지 않으면 오류를 표시합니다. 성공한 것처럼 샘플 응답을 보여주지 않으며 상품 DB를 유지합니다.
 
-<table><tr><td><img src="docs/images/07-model-unavailable.png" alt="실제 로컬 모델 연결 실패 안내와 변경되지 않은 상품 DB 및 고객 화면" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/07-model-unavailable.png" alt="실제 로컬 모델 연결 실패 안내와 변경되지 않은 상품 DB 및 고객 화면" width="1100"></td></tr></table>
 
 *모델 오류 — 모델 실행 상태를 확인한 뒤 다시 분석할 수 있습니다. 이 화면은 별도 합성 DB에서 연결 실패를 유도해 확인한 사례입니다.*
 
 **원문에 없는 인용:** 공개 시연 준비 중 정상 금리 공지를 읽는 첫 시험에서도 모델이 “금리는”을 “금리가”로 바꿔 인용했습니다. 변경값이 맞아 보여도 원문 인용 대조에 실패해 보류됐습니다.
 
-<table><tr><td><img src="docs/images/08-grounding-held.png" alt="정상 금리 공지를 읽었지만 모델이 인용문을 바꿔 근거 검증에 실패하고 보류된 실제 사례" width="1100"></td></tr></table>
+<table border="1" cellpadding="8"><tr><td><img src="docs/images/08-grounding-held.png" alt="정상 금리 공지를 읽었지만 모델이 인용문을 바꿔 근거 검증에 실패하고 보류된 실제 사례" width="1100"></td></tr></table>
 
 *근거 실패 — 코드가 실제 원문과 모델의 인용문을 대조합니다. 이 사례는 모델이 항상 정확하게 읽는다는 가정 없이 반영 경계를 시험한 결과입니다.*
 

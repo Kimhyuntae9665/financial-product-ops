@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#162c3c"><title>금융상품 Agent · 운영 콘솔</title>
+  <link rel="stylesheet" href="console.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#"><span class="brand-mark">FO</span><span>금융상품 Agent<small>OPERATIONS CONSOLE</small></span></a><div class="header-right"><span class="demo-tag">합성 금융상품 · 로컬 실행</span><a class="back-link" href="http://127.0.0.1:4320/">기존 시뮬레이션 ↗</a></div></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">OPENCLAW + QWEN / 도구를 사용하는 Agent</p><h1>조사는 AI에게, 결정은 담당자에게.</h1><p class="lead">공지를 조사하고 변경 근거를 제안합니다. 승인한 건만 Agent가 상품 DB에 반영합니다.</p></div><div class="intro-aside"><p>공고의 경쟁상품 조건 추적·상품 DB 최신화 업무를 위해, AI가 도구로 공지를 조사하고 검토 후 변경을 반영하는 Agent를 만들었습니다.</p><a href="https://banksalad.career.greetinghr.com/ko/o/91296" target="_blank" rel="noreferrer">공고 업무 확인 ↗</a></div></section>
+    <section class="statusbar" aria-label="실행 상태"><div><span id="connection-dot" class="connection-dot"></span><strong id="connection-label">로컬 연결 확인 중</strong><span id="model-status">Qwen 상태 확인 중</span></div><span id="run-status" aria-live="polite">실행 기록을 불러옵니다.</span></section>
+    <section class="flow-panel" aria-label="Agent의 역할과 승인 경계">
+      <div class="section-heading"><div><p class="eyebrow">01 / 업무가 이동하는 경로</p><h2>AI가 선택한 도구부터 고객 화면까지</h2></div><span class="subtle">빨간 영역 = AI가 판단하는 구간</span></div>
+      <div class="flow-scroll"><div class="flow-map">
+        <div class="source-node flow-node"><span class="node-number">시작</span><strong>조사 요청</strong><p>제휴 공지 · 경쟁상품<br>공개 페이지</p><span class="node-foot">사람이 작업 지정</span></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="ai-boundary"><div class="boundary-title"><span>AI AGENT</span><b>OpenClaw + Qwen</b></div><div class="ai-steps"><div><span class="step-index">1</span><strong>도구 선택</strong><p>작업에 맞는 호출</p></div><span class="inner-arrow" aria-hidden="true">→</span><div><span class="step-index">2</span><strong>원문 해석</strong><p>도구가 가져온 본문</p></div><span class="inner-arrow" aria-hidden="true">→</span><div><span class="step-index">3</span><strong>변경 제안</strong><p>금리·날짜·근거</p></div></div><p class="boundary-note">수집·검증·DB 쓰기는 Node.js 도구가 실행</p></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="code-node flow-node"><span class="node-number">4 · 코드</span><strong>규칙 검증</strong><p>원문 근거 · 적용일<br>출처 해시 · 버전</p><span class="node-foot">오류는 반영 차단</span></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="human-node flow-node"><span class="node-number">5 · 사람</span><strong>승인 / 보류</strong><p>제안과 근거 대조<br>담당자가 결정</p><span class="node-foot">승인 전에는 멈춤</span></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="db-node flow-node"><span class="node-number">6 · 저장</span><strong>상품 DB</strong><p>승인 건 반영 요청<br>Agent가 도구 호출</p><span class="node-foot">고객 화면에 표시</span></div>
+      </div></div>
+      <div class="flow-guide"><p><b>① 조사 시키기</b><span>실제 로컬 모델이 도구를 선택하고 실행합니다.</span></p><p><b>② 근거 확인 · 승인</b><span>원문 인용과 검증 결과를 함께 확인합니다.</span></p><p><b>③ 반영 시키기</b><span>승인과 DB 반영은 별도의 작업입니다.</span></p></div>
+    </section>
+    <section class="actionbar" aria-label="Agent 작업 요청"><div><span class="eyebrow">작업 요청</span><button class="primary" data-task="partner">공지 조사 시키기 <span>→</span></button><button data-task="competitor">경쟁상품 조사</button><button data-task="public">실제 공개 페이지 읽기</button></div><button id="reset-button" class="quiet">초기화</button></section>
+    <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+    <section class="work-grid">
+      <div class="review-workspace">
+        <div class="section-heading"><div><p class="eyebrow">02 / 변경 검토</p><h2>원문과 제안을 나란히 확인하세요.</h2></div><span id="proposal-count" class="pill">제안 0건</span></div>
+        <div id="proposal-tabs" class="proposal-tabs" aria-label="변경 제안 선택"></div>
+        <div class="evidence-grid"><section class="evidence original"><div class="card-heading"><span class="eyebrow">원문</span><span class="mini-tag">저장된 출처</span></div><div id="archive-info" class="archive-info"></div><pre id="source-original" class="source-text">공지를 조사하면 수집한 원문이 여기에 표시됩니다.</pre></section><section class="evidence proposal"><div class="card-heading"><span class="eyebrow ai-color">AI 변경 제안</span><span id="proposal-status" class="mini-tag">조사 전</span></div><div id="proposal-detail"></div></section></div>
+        <section class="validation-card"><div class="card-heading"><div><span class="eyebrow">코드 검증</span><h3>반영 조건 확인</h3></div><span id="validation-badge" class="mini-tag">제안 대기</span></div><div id="validation-detail"><p class="empty-copy">원문 근거·날짜·출처·DB 버전의 실제 검증 결과를 표시합니다.</p></div></section>
+        <section class="approval-card"><div><span class="eyebrow human-color">사람이 결정</span><h3>근거를 확인한 뒤 승인하거나 보류합니다.</h3><p id="decision-help">제안이 도착하면 결정할 수 있습니다.</p></div><div class="decision-actions"><button id="approve-button" class="approve" disabled>승인</button><button id="hold-button" disabled>보류</button><button id="apply-button" class="apply" disabled>승인 건 반영 시키기 →</button></div></section>
+      </div>
+      <aside class="side-column"><section class="customer-card"><p class="eyebrow db-color">03 / 고객이 보는 결과</p><h2>현재 상품 정보</h2><p class="subtle">상품 DB의 현재값을 읽는 데모 화면</p><div class="product-preview"><div class="product-title"><span class="bank-symbol">P</span><div><small>가상 금융사</small><b id="customer-name">제휴 대출상품</b></div></div><p class="rate-label">표시 금리</p><p class="customer-rate" id="customer-rate">—<small>%</small></p><div class="product-meta"><span>DB 버전</span><b id="customer-version">—</b></div><div class="product-meta"><span>반영 상태</span><b id="customer-applied">확인 중</b></div></div><p class="boundary-copy">승인만으로는 상품 값이 바뀌지 않습니다. 반영 작업의 검증을 통과해야 변경됩니다.</p></section><section class="notice-editor"><div class="card-heading"><div><p class="eyebrow">입력 바꾸기</p><h3>제휴 공지 원문</h3></div><span class="mini-tag">합성 자료</span></div><label for="notice-text">금리나 날짜를 바꿔 다시 조사해 보세요.</label><textarea id="notice-text" rows="7" spellcheck="false" placeholder="합성 공지를 불러오는 중입니다."></textarea><button id="notice-button" class="full">공지 수정</button><p class="subtle">저장 후 다시 조사해야 새 제안이 만들어집니다.</p></section></aside>
+    </section>
+    <section class="audit-panel"><div class="section-heading"><div><p class="eyebrow">04 / 실제 도구 실행 기록</p><h2>Agent가 무엇을 호출했는지 확인하세요.</h2></div><span id="event-count" class="pill">0건</span></div><p class="audit-intro">모델의 내부 추론 대신 실제 도구명, 입력, 반환값과 실행 상태를 표시합니다.</p><div id="run-list" class="run-list"></div><div id="event-list" class="event-list"><p class="empty-copy">아직 실행된 도구가 없습니다. 위에서 조사 작업을 요청하세요.</p></div></section>
+    <section class="research-panel"><div class="section-heading"><div><p class="eyebrow">조사 결과</p><h2>경쟁상품 · 공개 페이지</h2></div><span class="subtle">수집 결과와 출처를 확인</span></div><div id="research-list"><p class="empty-copy">경쟁상품 조사 또는 공개 페이지 읽기 결과가 여기에 표시됩니다.</p></div></section>
+    <footer><span>개인 데모 · 실제 회사 내부 시스템이 아닙니다.</span><span>제휴·경쟁상품 공지는 합성 자료이며, 공개 페이지 조회는 실제 출처로 구분합니다.</span></footer>
+  </main><script type="module" src="console.mjs"></script>
+</body>
+</html>
